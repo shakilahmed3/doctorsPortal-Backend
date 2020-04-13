@@ -50,6 +50,24 @@ app.post('/patient', (req, res) => {
 });
 
 
+app.get('/allPatient', (req, res) => {
+    client = new MongoClient(uri, { useNewUrlParser: true });
+    client.connect(err => {
+        const collection = client.db("doctorsPortal").collection("patient");
+        collection.find().toArray((err, documents) => {
+            if (err) {
+                console.log(err)
+                res.status(500).send({ message: err });
+            }
+            else {
+                res.send(documents);
+            }
+        });
+        client.close();
+    });
+});
+
+
 
 
 app.get('/product/:key', (req, res) => {
